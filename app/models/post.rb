@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  before_create :create_slug
+  
   belongs_to :user
   has_many :images
   has_many :comments, dependent: :destroy
