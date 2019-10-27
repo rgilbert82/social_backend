@@ -29,7 +29,7 @@ class Api::V1::LikesController < ApplicationController
 
   def destroy
     if @like.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @like.errors.full_messages.to_sentence }, status: 422
     end

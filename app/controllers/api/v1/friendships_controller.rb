@@ -25,7 +25,7 @@ class Api::V1::FriendshipsController < ApplicationController
 
   def destroy
     if @friendship.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @friendship.errors.full_messages.to_sentence }, status: 422
     end

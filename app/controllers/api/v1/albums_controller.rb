@@ -31,7 +31,7 @@ class Api::V1::AlbumsController < ApplicationController
 
   def destroy
     if @album.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @album.errors.full_messages.to_sentence }, status: 422
     end

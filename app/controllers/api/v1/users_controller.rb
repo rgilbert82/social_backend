@@ -25,7 +25,7 @@ class Api::V1::UsersController < ApplicationController
 
   def destroy
     if @user.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @user.errors.full_messages.to_sentence }, status: 422
     end
@@ -38,6 +38,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :birthday, :location, :tagline, :description)
+    params.require(:user).permit(:email, :first_name, :last_name, :password, :birthday, :location, :tagline, :description)
   end
 end

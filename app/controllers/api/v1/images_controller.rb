@@ -29,7 +29,7 @@ class Api::V1::ImagesController < ApplicationController
 
   def destroy
     if @image.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @image.errors.full_messages.to_sentence }, status: 422
     end

@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  before_create :create_slug
+  before_create :create_slug, :create_token
 
   validates_presence_of :first_name
   validates_presence_of :last_name
@@ -30,4 +30,11 @@ class User < ApplicationRecord
   has_many :received_conversations, class_name: 'Conversation', foreign_key: :recipient_id, dependent: :destroy
 
   has_secure_password validations: false
+
+  private
+
+  def create_token
+    new_token = SecureRandom.uuid
+    self.token = new_token
+  end
 end

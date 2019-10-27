@@ -29,7 +29,7 @@ class Api::V1::MessagesController < ApplicationController
 
   def destroy
     if @message.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @message.errors.full_messages.to_sentence }, status: 422
     end

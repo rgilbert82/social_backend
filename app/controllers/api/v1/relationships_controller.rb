@@ -25,7 +25,7 @@ class Api::V1::RelationshipsController < ApplicationController
 
   def destroy
     if @relationship.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @relationship.errors.full_messages.to_sentence }, status: 422
     end

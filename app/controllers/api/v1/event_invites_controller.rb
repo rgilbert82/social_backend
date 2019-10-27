@@ -31,7 +31,7 @@ class Api::V1::EventInvitesController < ApplicationController
 
   def destroy
     if @event_invite.destroy
-      render { success: 'Success' }
+      render json: { success: 'Success' }
     else
       render json: { errors: @event_invite.errors.full_messages.to_sentence }, status: 422
     end

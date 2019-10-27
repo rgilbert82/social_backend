@@ -46,6 +46,6 @@ class Api::V1::SessionsController < ApplicationController
 end
 
 
-# curl -d '{"user":{"email":"ry.gil.online@gmail.com", "password": "password"}}' -H "Content-Type: application/json" -X POST http://localhost:3000/api/v1/sessions
-# curl -H "Authorization: c324a293-2a72-400e-9ef7-178bf6221df1" -X GET http://localhost:3000/api/v1/sessions/1
-# curl -H "Authorization: c324a293-2a72-400e-9ef7-178bf6221df1" -X DELETE http://localhost:3000/api/v1/sessions/1
+# curl -d '{"user":{"email":"ry.gil.online@gmail.com", "password": "password"}}' -H "Content-Type: application/json" -X POST http://localhost:3001/api/v1/sessions
+# curl -H "Authorization: c324a293-2a72-400e-9ef7-178bf6221df1" -X GET http://localhost:3001/api/v1/sessions/1
+# curl -H "Authorization: c324a293-2a72-400e-9ef7-178bf6221df1" -X DELETE http://localhost:3001/api/v1/sessions/1
