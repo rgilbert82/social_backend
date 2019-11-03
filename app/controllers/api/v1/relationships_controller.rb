@@ -1,4 +1,4 @@
-class Api::V1::RelationshipsController < ApplicationController
+class Api::V1::RelationshipsController < Api::V1::BaseController
   before_action :get_relationship, only: [:update, :destroy]
 
   def index

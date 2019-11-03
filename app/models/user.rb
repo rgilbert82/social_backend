@@ -17,9 +17,12 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
 
   has_many :friendships, dependent: :destroy
-  has_many :friends, through: :friendships
+  has_many :friends, -> { where(friendships: { confirmed: true }) }, through: :friendships
   has_many :inverse_friendships, class_name: 'Friendship', foreign_key: :friend_id, dependent: :destroy
-  has_many :inverse_friends, through: :inverse_friendships, source: :user
+  has_many :inverse_friends, -> { where(friendships: { confirmed: true }) }, through: :inverse_friendships, source: :user
+
+  has_many :pending_friends, -> { where(friendships: { confirmed: false }) }, through: :friendships, source: :friend
+  has_many :pending_inverse_friends, -> { where(friendships: { confirmed: false }) }, through: :inverse_friendships, source: :user
 
   has_many :relationships, dependent: :destroy
   has_many :relations, through: :relationships
@@ -30,6 +33,25 @@ class User < ApplicationRecord
   has_many :received_conversations, class_name: 'Conversation', foreign_key: :recipient_id, dependent: :destroy
 
   has_secure_password validations: false
+
+
+
+  def all_friends
+    (self.friends + self.inverse_friends).uniq.sort_by {|obj| obj.last_name }
+  end
+
+  def all_pending_friends
+    (self.pending_friends + self.pending_inverse_friends).uniq.sort_by {|obj| obj.last_name }
+  end
+
+  def with_friends
+    {
+      user: self,
+      friends: self.all_friends,
+      pending_friends: self.pending_friends,
+      pending_inverse_friends: self.pending_inverse_friends
+    }
+  end
 
   private
 

@@ -1,4 +1,4 @@
-class Api::V1::ConversationsController < ApplicationController
+class Api::V1::ConversationsController < Api::V1::BaseController
   before_action :get_conversation, only: [:show, :update, :destroy]
 
   def index

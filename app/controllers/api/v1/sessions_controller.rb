@@ -1,9 +1,9 @@
-class Api::V1::SessionsController < ApplicationController
+class Api::V1::SessionsController < Api::V1::BaseController
   before_action :get_current_user, only: [:show, :destroy]
 
   def show
     if @current_user
-      render json: @current_user
+      render json: @current_user.with_friends
     else
       render json: { errors: "No current user found" }, status: 422
     end
@@ -14,7 +14,7 @@ class Api::V1::SessionsController < ApplicationController
 
     if valid_user && valid_user.authenticate(user_params[:password])
       update_token(valid_user)
-      render json: valid_user
+      render json: valid_user.with_friends
     else
       render json: { errors: "Invalid email or password" }, status: 422
     end
@@ -33,10 +33,6 @@ class Api::V1::SessionsController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password)
-  end
-
-  def get_current_user
-    @current_user = User.where({ token: request.headers['Authorization'] }).first
   end
 
   def update_token(user)

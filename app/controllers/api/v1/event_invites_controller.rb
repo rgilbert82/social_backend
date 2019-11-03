@@ -1,4 +1,4 @@
-class Api::V1::EventInvitesController < ApplicationController
+class Api::V1::EventInvitesController < Api::V1::BaseController
   before_action :get_event_invite, only: [:show, :update, :destroy]
 
   def index

@@ -1,4 +1,4 @@
-class Api::V1::ImagesController < ApplicationController
+class Api::V1::ImagesController < Api::V1::BaseController
   before_action :get_image, only: [:show, :update, :destroy]
 
   def index

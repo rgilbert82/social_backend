@@ -2,13 +2,12 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :sessions, only: [:show, :create, :destroy]
-      
-      resources :users, only: [:show, :create, :update, :destroy] do
+
+      resources :users, only: [:index, :show, :create, :update, :destroy] do
         resources :albums, only: [:index]
         resources :comments, only: [:index]
         resources :conversations, only: [:index]
         resources :events, only: [:index]
-        resources :friendships, only: [:index]
         resources :images, only: [:index]
         resources :likes, only: [:index]
         resources :messages, only: [:index]
@@ -33,7 +32,9 @@ Rails.application.routes.draw do
 
       resources :event_invites, only: [:show, :create, :update, :destroy]
 
-      resources :friendships, only: [:create, :update, :destroy]
+      post 'friendship_confirm/:id', to: 'friendships#confirm', as: 'friendship_confirm'
+      post 'friendship_deny/:id',    to: 'friendships#deny',    as: 'friendship_deny'
+      post 'friendship_status/:id',  to: 'friendships#status',  as: 'friendship_status'
 
       resources :images, only: [:show, :create, :update, :destroy] do
         resources :comments, only: [:index]

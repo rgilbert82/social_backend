@@ -1,4 +1,4 @@
-class Api::V1::LikesController < ApplicationController
+class Api::V1::LikesController < Api::V1::BaseController
   before_action :get_like, only: [:show, :update, :destroy]
 
   def index

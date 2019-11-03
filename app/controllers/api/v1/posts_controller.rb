@@ -1,4 +1,4 @@
-class Api::V1::PostsController < ApplicationController
+class Api::V1::PostsController < Api::V1::BaseController
   before_action :get_post, only: [:show, :update, :destroy]
 
   def index

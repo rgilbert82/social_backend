@@ -129,6 +129,9 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    responders (3.0.0)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rspec-core (3.9.0)
       rspec-support (~> 3.9.0)
     rspec-expectations (3.9.0)
@@ -188,6 +191,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.2.3)
   rails-controller-testing
+  responders
   rspec-rails
   shoulda-matchers
   spring

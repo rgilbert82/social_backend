@@ -1,8 +1,19 @@
-class Api::V1::UsersController < ApplicationController
-  before_action :get_user, only: [:show, :update, :destroy]
+class Api::V1::UsersController < Api::V1::BaseController
+  before_action :get_user, only: [:update, :destroy]
+
+  def index
+    render json: User.all
+  end
 
   def show
-    render json: @user
+    slug = params[:id]
+    user = User.where({ slug: slug }).first
+
+    if user
+      render json: user
+    else
+      render json: { errors: 'User not found.' }, status: 422
+    end
   end
 
   def create

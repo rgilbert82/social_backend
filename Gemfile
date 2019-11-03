@@ -8,6 +8,7 @@ gem 'puma', '~> 3.11'
 gem 'rack-cors'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'responders'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

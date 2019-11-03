@@ -1,43 +1,67 @@
-class Api::V1::FriendshipsController < ApplicationController
-  before_action :get_friendship, only: [:update, :destroy]
+class Api::V1::FriendshipsController < Api::V1::BaseController
+  before_action :get_current_user, only: [:confirm, :deny, :status]
 
-  def index
-    # TODO
-  end
+  def status
+    if @current_user && @current_user.id.to_i == friendship_params[:user_id].to_i
+      user_id   = friendship_params[:user_id]
+      friend_id = friendship_params[:friend_id]
 
-  def create
-    @friendship = Friendship.new(friendship_params)
+      if @current_user.friends.exists?(friend_id)
+        unfriend(user_id, friend_id)
+      elsif @current_user.inverse_friends.exists?(friend_id)
+        unfriend(friend_id, user_id)
+      else
+        Friendship.create(user_id: user_id, friend_id: friend_id, confirmed: false)
+      end
 
-    if @friendship.save
-      render json: @friendship
+      render json: @current_user.with_friends
     else
-      render json: { errors: @friendship.errors.full_messages.to_sentence }, status: 422
+      render json: { errors: "No current user found" }, status: 422
     end
   end
 
-  def update
-    if @friendship.update(friendship_params)
-      render json: @friendship
+  def confirm
+    if @current_user && @current_user.id.to_i == friendship_params[:user_id].to_i
+      user_id    = friendship_params[:user_id]
+      friend_id  = friendship_params[:friend_id]
+      friendship = Friendship.where({ user_id: friend_id, friend_id: user_id }).first
+
+      if friendship
+        friendship.update_column('confirmed', true)
+        render json: @current_user.with_friends
+      else
+        render json: { errors: "There was an error confirming the friendship." }, status: 422
+      end
     else
-      render json: { errors: @friendship.errors.full_messages.to_sentence }, status: 422
+      render json: { errors: "No current user found" }, status: 422
     end
   end
 
-  def destroy
-    if @friendship.destroy
-      render json: { success: 'Success' }
+  def deny
+    if @current_user && @current_user.id.to_i == friendship_params[:user_id].to_i
+      user_id    = friendship_params[:user_id]
+      friend_id  = friendship_params[:friend_id]
+      friendship = Friendship.where({ user_id: friend_id, friend_id: user_id }).first
+
+      if friendship
+        friendship.destroy
+        render json: @current_user.with_friends
+      else
+        render json: { errors: "There was an error declining the friendship." }, status: 422
+      end
     else
-      render json: { errors: @friendship.errors.full_messages.to_sentence }, status: 422
+      render json: { errors: "No current user found" }, status: 422
     end
   end
 
   private
 
-  def get_friendship
-    @friendship = Friendship.find(params[:id])
+  def unfriend(user_id, friend_id)
+    fr = Friendship.where(user_id: user_id, friend_id: friend_id).first
+    Friendship.destroy(fr.id)
   end
 
   def friendship_params
-    params.require(:friendship).permit(:user_id, :friend_id)
+    params.require(:friendship).permit(:user_id, :friend_id, :confirmed)
   end
 end

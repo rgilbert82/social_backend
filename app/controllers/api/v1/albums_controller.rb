@@ -1,4 +1,4 @@
-class Api::V1::AlbumsController < ApplicationController
+class Api::V1::AlbumsController < Api::V1::BaseController
   before_action :get_album, only: [:show, :update, :destroy]
 
   def index
