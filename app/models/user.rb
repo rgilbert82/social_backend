@@ -7,11 +7,9 @@ class User < ApplicationRecord
   validates_presence_of :email
   validates_uniqueness_of :email
 
-  has_many :albums, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :event_invites, dependent: :destroy
-  has_many :images, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :posts, dependent: :destroy

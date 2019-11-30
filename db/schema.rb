@@ -10,20 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_14_183915) do
-
-  create_table "albums", force: :cascade do |t|
-    t.string "title"
-    t.string "slug"
-    t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 2019_11_30_190017) do
 
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.integer "post_id"
-    t.integer "image_id"
     t.integer "event_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -69,25 +60,11 @@ ActiveRecord::Schema.define(version: 2019_10_14_183915) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "images", force: :cascade do |t|
-    t.string "image_url"
-    t.text "description"
-    t.boolean "avatar"
-    t.boolean "background"
-    t.string "slug"
-    t.integer "user_id"
-    t.integer "album_id"
-    t.integer "post_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "likes", force: :cascade do |t|
     t.boolean "like"
     t.boolean "super_like"
     t.integer "user_id"
     t.integer "post_id"
-    t.integer "image_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -104,7 +81,6 @@ ActiveRecord::Schema.define(version: 2019_10_14_183915) do
   create_table "posts", force: :cascade do |t|
     t.text "body"
     t.string "slug"
-    t.string "video"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

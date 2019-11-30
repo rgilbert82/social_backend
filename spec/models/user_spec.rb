@@ -7,11 +7,9 @@ describe User do
   it { should validate_presence_of(:email) }
   it { should validate_uniqueness_of(:email) }
 
-  it { should have_many(:albums).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
   it { should have_many(:events).dependent(:destroy) }
   it { should have_many(:event_invites).dependent(:destroy) }
-  it { should have_many(:images).dependent(:destroy) }
   it { should have_many(:likes).dependent(:destroy) }
   it { should have_many(:messages).dependent(:destroy) }
   it { should have_many(:posts).dependent(:destroy) }
