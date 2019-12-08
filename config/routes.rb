@@ -4,29 +4,18 @@ Rails.application.routes.draw do
       resources :sessions, only: [:show, :create, :destroy]
 
       resources :users, only: [:index, :show, :create, :update, :destroy] do
-        resources :albums, only: [:index]
-        resources :comments, only: [:index]
         resources :conversations, only: [:index]
         resources :events, only: [:index]
-        resources :images, only: [:index]
         resources :likes, only: [:index]
-        resources :messages, only: [:index]
         resources :posts, only: [:index]
         resources :relationships, only: [:index]
       end
 
-      resources :albums, only: [:show, :create, :update, :destroy] do
-        resources :images, only: [:index]
-      end
-
       resources :comments, only: [:create, :update, :destroy]
 
-      resources :conversations, only: [:show, :create, :update, :destroy] do
-        resources :messages, only: [:index]
-      end
+      resources :conversations, only: [:show, :create, :update]
 
       resources :events, only: [:show, :create, :update, :destroy] do
-        resources :comments, only: [:index]
         resources :event_invites, only: [:index]
       end
 
@@ -36,18 +25,11 @@ Rails.application.routes.draw do
       post 'friendship_deny/:id',    to: 'friendships#deny',    as: 'friendship_deny'
       post 'friendship_status/:id',  to: 'friendships#status',  as: 'friendship_status'
 
-      resources :images, only: [:show, :create, :update, :destroy] do
-        resources :comments, only: [:index]
-        resources :likes, only: [:index]
-      end
-
       resources :likes, only: [:show, :create, :update, :destroy]
 
       resources :messages, only: [:show, :create, :update, :destroy]
 
-      resources :posts, only: [:show, :create, :update, :destroy] do
-        resources :comments, only: [:index]
-        resources :images, only: [:index]
+      resources :posts, only: [:create, :update, :destroy] do
         resources :likes, only: [:index]
       end
 

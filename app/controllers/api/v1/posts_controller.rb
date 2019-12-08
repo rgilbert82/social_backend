@@ -1,14 +1,10 @@
 class Api::V1::PostsController < Api::V1::BaseController
-  before_action :get_post, only: [:show, :update, :destroy]
+  before_action :get_post, only: [:update, :destroy]
 
   def index
     user = User.find(params[:user_id])
     @posts = user.posts
     render json: @posts
-  end
-
-  def show
-    render json: @post
   end
 
   def create
@@ -44,6 +40,6 @@ class Api::V1::PostsController < Api::V1::BaseController
   end
 
   def post_params
-    params.require(:post).permit(:body, :video, :user_id)
+    params.require(:post).permit(:body, :user_id)
   end
 end

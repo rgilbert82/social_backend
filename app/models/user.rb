@@ -11,7 +11,6 @@ class User < ApplicationRecord
   has_many :events, dependent: :destroy
   has_many :event_invites, dependent: :destroy
   has_many :likes, dependent: :destroy
-  has_many :messages, dependent: :destroy
   has_many :posts, dependent: :destroy
 
   has_many :friendships, dependent: :destroy
@@ -30,9 +29,14 @@ class User < ApplicationRecord
   has_many :sent_conversations, class_name: 'Conversation', foreign_key: :sender_id, dependent: :destroy
   has_many :received_conversations, class_name: 'Conversation', foreign_key: :recipient_id, dependent: :destroy
 
+  has_many :sent_messages, class_name: 'Message', foreign_key: :user_id, dependent: :destroy
+  has_many :received_messages, class_name: 'Message', foreign_key: :recipient_id, dependent: :destroy
+
   has_secure_password validations: false
 
-
+  def name
+    "#{ self.first_name } #{ self.last_name }".strip
+  end
 
   def all_friends
     (self.friends + self.inverse_friends).uniq.sort_by {|obj| obj.last_name }
@@ -49,6 +53,33 @@ class User < ApplicationRecord
       pending_friends: self.pending_friends,
       pending_inverse_friends: self.pending_inverse_friends
     }
+  end
+
+  def all_conversations
+    (self.sent_conversations + self.received_conversations).uniq.sort_by {|obj| obj.created_at }
+  end
+
+  def unread_messages_count
+    self.received_messages.where({ unread: true }).count
+  end
+
+  def limited_attributes
+    {
+      avatar: self.avatar,
+      first_name: self.first_name,
+      last_name: self.last_name,
+      name: self.name,
+      email: self.email,
+      description: self.description,
+      slug: self.slug,
+      id: self.id
+    }
+  end
+
+  def self.limited_attributes(users)
+    users.map do |user|
+      user.limited_attributes
+    end
   end
 
   private

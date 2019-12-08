@@ -14,7 +14,7 @@ class Api::V1::FriendshipsController < Api::V1::BaseController
         Friendship.create(user_id: user_id, friend_id: friend_id, confirmed: false)
       end
 
-      render json: @current_user.with_friends
+      render json: @current_user
     else
       render json: { errors: "No current user found" }, status: 422
     end
@@ -28,7 +28,7 @@ class Api::V1::FriendshipsController < Api::V1::BaseController
 
       if friendship
         friendship.update_column('confirmed', true)
-        render json: @current_user.with_friends
+        render json: @current_user
       else
         render json: { errors: "There was an error confirming the friendship." }, status: 422
       end
@@ -45,7 +45,7 @@ class Api::V1::FriendshipsController < Api::V1::BaseController
 
       if friendship
         friendship.destroy
-        render json: @current_user.with_friends
+        render json: @current_user
       else
         render json: { errors: "There was an error declining the friendship." }, status: 422
       end

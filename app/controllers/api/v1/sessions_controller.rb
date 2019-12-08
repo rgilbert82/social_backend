@@ -3,7 +3,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
 
   def show
     if @current_user
-      render json: @current_user.with_friends
+      render json: @current_user
     else
       render json: { errors: "No current user found" }, status: 422
     end
@@ -14,7 +14,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
 
     if valid_user && valid_user.authenticate(user_params[:password])
       update_token(valid_user)
-      render json: valid_user.with_friends
+      render json: valid_user
     else
       render json: { errors: "Invalid email or password" }, status: 422
     end
@@ -40,8 +40,3 @@ class Api::V1::SessionsController < Api::V1::BaseController
     user.update_column('token', new_token)
   end
 end
-
-
-# curl -d '{"user":{"email":"ry.gil.online@gmail.com", "password": "password"}}' -H "Content-Type: application/json" -X POST http://localhost:3001/api/v1/sessions
-# curl -H "Authorization: c324a293-2a72-400e-9ef7-178bf6221df1" -X GET http://localhost:3001/api/v1/sessions/1
-# curl -H "Authorization: c324a293-2a72-400e-9ef7-178bf6221df1" -X DELETE http://localhost:3001/api/v1/sessions/1

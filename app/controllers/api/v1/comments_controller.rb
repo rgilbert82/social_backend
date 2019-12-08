@@ -1,10 +1,6 @@
 class Api::V1::CommentsController < Api::V1::BaseController
   before_action :get_comment, only: [:update, :destroy]
 
-  def index
-    # TODO
-  end
-
   def create
     @comment = Comment.new(comment_params)
 
@@ -38,6 +34,6 @@ class Api::V1::CommentsController < Api::V1::BaseController
   end
 
   def comment_params
-    params.require(:comment).permit(:body, :post_id, :event_id, :image_id, :user_id)
+    params.require(:comment).permit(:body, :post_id, :event_id, :user_id)
   end
 end

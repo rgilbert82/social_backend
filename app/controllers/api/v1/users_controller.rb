@@ -2,7 +2,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   before_action :get_user, only: [:update, :destroy]
 
   def index
-    render json: User.all
+    render json: User.limited_attributes(User.all)
   end
 
   def show

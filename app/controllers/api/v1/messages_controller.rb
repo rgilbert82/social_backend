@@ -1,10 +1,6 @@
 class Api::V1::MessagesController < Api::V1::BaseController
   before_action :get_message, only: [:show, :update, :destroy]
 
-  def index
-    # TODO
-  end
-
   def show
     render json: @message
   end

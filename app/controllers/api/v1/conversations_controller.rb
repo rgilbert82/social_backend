@@ -2,7 +2,9 @@ class Api::V1::ConversationsController < Api::V1::BaseController
   before_action :get_conversation, only: [:show, :update, :destroy]
 
   def index
-    # TODO
+    user = User.find(params[:user_id])
+    @conversations = user.all_conversations
+    render json: @conversations
   end
 
   def show
@@ -22,14 +24,6 @@ class Api::V1::ConversationsController < Api::V1::BaseController
   def update
     if @conversation.update(conversation_params)
       render json: @conversation
-    else
-      render json: { errors: @conversation.errors.full_messages.to_sentence }, status: 422
-    end
-  end
-
-  def destroy
-    if @conversation.destroy
-      render json: { success: 'Success' }
     else
       render json: { errors: @conversation.errors.full_messages.to_sentence }, status: 422
     end
