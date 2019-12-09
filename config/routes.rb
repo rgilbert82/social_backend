@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       resources :users, only: [:index, :show, :create, :update, :destroy] do
         resources :conversations, only: [:index]
         resources :events, only: [:index]
-        resources :likes, only: [:index]
         resources :posts, only: [:index]
         resources :relationships, only: [:index]
       end
@@ -25,13 +24,11 @@ Rails.application.routes.draw do
       post 'friendship_deny/:id',    to: 'friendships#deny',    as: 'friendship_deny'
       post 'friendship_status/:id',  to: 'friendships#status',  as: 'friendship_status'
 
-      resources :likes, only: [:show, :create, :update, :destroy]
+      post 'like_status/:id',  to: 'likes#status',  as: 'like_status'
 
       resources :messages, only: [:show, :create, :update, :destroy]
 
-      resources :posts, only: [:create, :update, :destroy] do
-        resources :likes, only: [:index]
-      end
+      resources :posts, only: [:create, :update, :destroy]
 
       resources :relationships, only: [:create, :update, :destroy]
     end

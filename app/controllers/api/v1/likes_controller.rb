@@ -1,15 +1,31 @@
 class Api::V1::LikesController < Api::V1::BaseController
-  before_action :get_like, only: [:show, :update, :destroy]
+  before_action :get_current_user, only: [:status]
 
-  def index
-    # TODO
+  def status
+    if @current_user && @current_user.id.to_i == like_params[:user_id].to_i
+      @like = Like.where({ user_id: like_params[:user_id] }).first
+
+      if @like
+        if !like_params[:like] && !like_params[:super_like]
+          destroy_like
+        else
+          update_like
+        end
+      else
+        create_like
+      end
+    else
+      render json: { errors: "No current user found" }, status: 422
+    end
   end
 
-  def show
-    render json: @like
+  private
+
+  def like_params
+    params.require(:like).permit(:like, :super_like, :user_id, :post_id, :comment_id)
   end
 
-  def create
+  def create_like
     @like = Like.new(like_params)
 
     if @like.save
@@ -19,7 +35,7 @@ class Api::V1::LikesController < Api::V1::BaseController
     end
   end
 
-  def update
+  def update_like
     if @like.update(like_params)
       render json: @like
     else
@@ -27,21 +43,16 @@ class Api::V1::LikesController < Api::V1::BaseController
     end
   end
 
-  def destroy
-    if @like.destroy
-      render json: { success: 'Success' }
-    else
-      render json: { errors: @like.errors.full_messages.to_sentence }, status: 422
-    end
-  end
+  def destroy_like
+    @data = {
+      like: {
+        like: false,
+        super_like: false,
+        user: { id: like_params[:user_id] }
+        }
+      }
 
-  private
-
-  def get_like
-    @like = Like.find(params[:id])
-  end
-
-  def like_params
-    params.require(:like).permit(:like, :super_like, :user_id, :post_id, :image_id)
+    Like.destroy(@like.id)
+    render json: @data
   end
 end
