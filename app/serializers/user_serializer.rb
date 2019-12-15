@@ -3,8 +3,6 @@ class UserSerializer < ActiveModel::Serializer
              :description, :slug, :token, :admin, :friends, :pending_friends,
              :pending_inverse_friends, :unread_messages_count
 
-  # has_many :posts, include: true
-
   def name
     object.name
   end

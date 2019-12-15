@@ -1,10 +1,10 @@
 class User < ApplicationRecord
   before_create :create_slug, :create_token
 
-  validates_presence_of :first_name
-  validates_presence_of :last_name
-  validates_presence_of :password
-  validates_presence_of :email
+  validates_presence_of   :first_name
+  validates_presence_of   :last_name
+  validates_presence_of   :password
+  validates_presence_of   :email
   validates_uniqueness_of :email
 
   has_many :comments, dependent: :destroy
@@ -21,11 +21,6 @@ class User < ApplicationRecord
   has_many :pending_friends, -> { where(friendships: { confirmed: false }) }, through: :friendships, source: :friend
   has_many :pending_inverse_friends, -> { where(friendships: { confirmed: false }) }, through: :inverse_friendships, source: :user
 
-  has_many :relationships, dependent: :destroy
-  has_many :relations, through: :relationships
-  has_many :inverse_relationships, class_name: 'Relationship', foreign_key: :relation_id, dependent: :destroy
-  has_many :inverse_relations, through: :inverse_relationships, source: :user
-
   has_many :sent_conversations, class_name: 'Conversation', foreign_key: :sender_id, dependent: :destroy
   has_many :received_conversations, class_name: 'Conversation', foreign_key: :recipient_id, dependent: :destroy
 
@@ -33,6 +28,7 @@ class User < ApplicationRecord
   has_many :received_messages, class_name: 'Message', foreign_key: :recipient_id, dependent: :destroy
 
   has_secure_password validations: false
+  
 
   def name
     "#{ self.first_name } #{ self.last_name }".strip

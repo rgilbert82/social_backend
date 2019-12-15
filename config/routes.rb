@@ -7,7 +7,6 @@ Rails.application.routes.draw do
         resources :conversations, only: [:index]
         resources :events, only: [:index]
         resources :posts, only: [:index]
-        resources :relationships, only: [:index]
       end
 
       resources :comments, only: [:create, :update, :destroy]
@@ -29,8 +28,6 @@ Rails.application.routes.draw do
       resources :messages, only: [:show, :create, :update, :destroy]
 
       resources :posts, only: [:create, :update, :destroy]
-
-      resources :relationships, only: [:create, :update, :destroy]
     end
   end
 end
