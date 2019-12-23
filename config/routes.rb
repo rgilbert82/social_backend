@@ -1,14 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :sessions, only: [:show, :create, :destroy]
-
-      resources :users, only: [:index, :show, :create, :update, :destroy] do
-        resources :conversations, only: [:index]
-        resources :events, only: [:index]
-        resources :posts, only: [:index]
-      end
-
       resources :comments, only: [:create, :update, :destroy]
 
       resources :conversations, only: [:show, :create, :update]
@@ -25,9 +17,18 @@ Rails.application.routes.draw do
 
       post 'like_status/:id',  to: 'likes#status',  as: 'like_status'
 
-      resources :messages, only: [:show, :create, :update, :destroy]
+      resources :messages, only: [:create]
 
       resources :posts, only: [:create, :update, :destroy]
+
+      resources :sessions, only: [:show, :create, :destroy]
+
+      resources :users, only: [:index, :show, :create, :update, :destroy] do
+        get 'inbox',  to: 'conversations#inbox',  as: 'inbox'
+        get 'trash',  to: 'conversations#trash',  as: 'trash'
+        resources :events, only: [:index]
+        resources :posts, only: [:index]
+      end
     end
   end
 end

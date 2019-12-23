@@ -8,4 +8,8 @@ class Conversation < ApplicationRecord
   validates_presence_of :title
 
   default_scope { order(created_at: :desc) }
+
+  def mark_messages_read(user)
+    self.messages.where({ recipient: user, unread: true }).update_all( unread: false )
+  end
 end

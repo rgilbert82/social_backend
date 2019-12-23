@@ -1,43 +1,23 @@
 class Api::V1::MessagesController < Api::V1::BaseController
-  before_action :get_message, only: [:show, :update, :destroy]
-
-  def show
-    render json: @message
-  end
+  before_action :get_current_user, only: [:create]
 
   def create
-    @message = Message.new(message_params)
+    if @current_user && @current_user.id.to_i == message_params[:user_id].to_i
+      @message = Message.new(message_params)
 
-    if @message.save
-      render json: @message
+      if @message.save
+        render json: @message
+      else
+        render json: { errors: @message.errors.full_messages.to_sentence }, status: 422
+      end
     else
-      render json: { errors: @message.errors.full_messages.to_sentence }, status: 422
-    end
-  end
-
-  def update
-    if @message.update(message_params)
-      render json: @message
-    else
-      render json: { errors: @message.errors.full_messages.to_sentence }, status: 422
-    end
-  end
-
-  def destroy
-    if @message.destroy
-      render json: { success: 'Success' }
-    else
-      render json: { errors: @message.errors.full_messages.to_sentence }, status: 422
+      render json: { errors: "No current user found" }, status: 422
     end
   end
 
   private
 
-  def get_message
-    @message = Message.find(params[:id])
-  end
-
   def message_params
-    params.require(:message).permit(:body, :unread, :user_id, :conversation_id)
+    params.require(:message).permit(:body, :user_id, :recipient_id, :conversation_id)
   end
 end

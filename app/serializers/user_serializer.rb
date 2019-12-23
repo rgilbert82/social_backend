@@ -1,7 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :avatar, :email, :first_name, :last_name, :name, :birthday, :location, :tagline,
-             :description, :slug, :token, :admin, :friends, :pending_friends,
-             :pending_inverse_friends, :unread_messages_count
+  attributes :id, :avatar, :email, :first_name, :last_name, :name, :birthday,
+             :location, :tagline, :description, :slug, :token, :admin, :friends,
+             :pending_friends, :pending_inverse_friends, :unread_messages_count
 
   def name
     object.name

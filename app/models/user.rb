@@ -28,7 +28,7 @@ class User < ApplicationRecord
   has_many :received_messages, class_name: 'Message', foreign_key: :recipient_id, dependent: :destroy
 
   has_secure_password validations: false
-  
+
 
   def name
     "#{ self.first_name } #{ self.last_name }".strip
@@ -52,7 +52,23 @@ class User < ApplicationRecord
   end
 
   def all_conversations
-    (self.sent_conversations + self.received_conversations).uniq.sort_by {|obj| obj.created_at }
+    (self.sent_conversations + self.received_conversations).uniq.sort_by {|obj| obj[created_at: :desc] }
+  end
+
+  def inbox
+    (self.sent_conversations + self.received_conversations).uniq.select do |conv|
+      (conv.sender == self && !conv.sender_trash) || (conv.recipient == self && !conv.recipient_trash)
+    end.sort_by do |conv|
+      conv[created_at: :desc]
+    end
+  end
+
+  def trash
+    (self.sent_conversations + self.received_conversations).uniq.select do |conv|
+      (conv.sender == self && conv.sender_trash) || (conv.recipient == self && conv.recipient_trash)
+    end.sort_by do |conv|
+      conv[created_at: :desc]
+    end
   end
 
   def unread_messages_count

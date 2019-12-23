@@ -1,12 +1,15 @@
 class ConversationSerializer < ActiveModel::Serializer
-  attributes :id, :title, :slug, :sender_trash, :recipient_trash, :sender, :recipient, :created_at
-  has_many :messages, include: true, include_nested_associations: true
+  attributes :id, :title, :slug, :sender_trash, :recipient_trash,
+             :sender_id, :recipient_id, :created_at,
+             :has_unread_sender_messages, :has_unread_recipient_messages
 
-  def sender
-    object.sender.limited_attributes
+  has_many :messages, include: false
+
+  def has_unread_sender_messages
+    object.messages.where({ recipient_id: object.sender_id, unread: true }).count > 0
   end
 
-  def recipient
-    object.recipient.limited_attributes
+  def has_unread_recipient_messages
+    object.messages.where({ recipient_id: object.recipient_id, unread: true }).count > 0
   end
 end
