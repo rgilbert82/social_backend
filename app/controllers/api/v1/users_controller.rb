@@ -1,4 +1,5 @@
 class Api::V1::UsersController < Api::V1::BaseController
+  before_action :get_current_user, only: [:update, :destroy]
   before_action :get_user, only: [:update, :destroy]
 
   def index
@@ -27,18 +28,28 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def update
-    if @user.update(user_params)
-      render json: @user
+    if @current_user && @current_user == @user
+      @user.assign_attributes(user_params)
+
+      if @user.save(validate: false)
+        render json: @user
+      else
+        render json: { errors: @user.errors.full_messages.to_sentence }, status: 422
+      end
     else
-      render json: { errors: @user.errors.full_messages.to_sentence }, status: 422
+      render json: { errors: "No current user found" }, status: 422
     end
   end
 
   def destroy
-    if @user.destroy
-      render json: { success: 'Success' }
+    if @current_user && @current_user == @user
+      if @user.destroy
+        render json: { success: 'Success' }
+      else
+        render json: { errors: @user.errors.full_messages.to_sentence }, status: 422
+      end
     else
-      render json: { errors: @user.errors.full_messages.to_sentence }, status: 422
+      render json: { errors: "No current user found" }, status: 422
     end
   end
 
@@ -49,6 +60,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :password, :birthday, :location, :tagline, :description)
+    params.require(:user).permit(:id, :avatar, :email, :first_name, :last_name, :password, :birthday, :location, :tagline, :description)
   end
 end
