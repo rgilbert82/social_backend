@@ -1,24 +1,18 @@
-# README
+# Friendbook 1984: back-end
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the back-end for my Facebook clone app, built with Rails 5.
+Features include:
 
-Things you may want to cover:
+* Users can donate cryptocurrency through Coinbase.
+* Users can register for new accounts.
+* Registered users can manage their profiles.
+* Registered users can create custom avatar illustrations.
+* Registered users can create and edit posts.
+* Registered users can create and edit post comments.
+* Registered users can befriend other users.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+------
+[Front-end Github Repo](https://github.com/rgilbert82/social_frontend)
+------
+[Heroku link](https://rg-friendbook-1984.herokuapp.com/)
+------
